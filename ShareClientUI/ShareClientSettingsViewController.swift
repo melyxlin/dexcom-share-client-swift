@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-import LoopAlgorithm
 import LoopKit
 import LoopKitUI
 import ShareClient
@@ -184,10 +183,9 @@ public class ShareClientSettingsViewController: UITableViewController {
             tableView.deselectRow(at: indexPath, animated: true)
         case .delete:
             let confirmVC = UIAlertController(cgmDeletionHandler: {
-                self.cgmManager.notifyDelegateOfDeletion {
-                    DispatchQueue.main.async {
-                        self.complete()
-                    }
+                Task {
+                    await self.cgmManager.delete()
+                    self.complete()
                 }
             })
 
